@@ -1,0 +1,18 @@
+{
+  "name": "chai-aur-backend-mega-project",
+  "version": "1.0.0",
+  "description": "A Backend Mega Project Of Chai Aur Code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "js",
+    "backend",
+    "chai aur code",
+    "mega project"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
