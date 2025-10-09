@@ -4,7 +4,7 @@
   "description": "A Backend Mega Project Of Chai Aur Code",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.js"
   },
   "keywords": [
     "js",
@@ -14,5 +14,8 @@
   ],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
