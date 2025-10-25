@@ -106,7 +106,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
     if (req.user?._id.toString() !== playlist.owner.toString()) {
       throw new ApiErrors(403, "You are unauthorized");
     }
-    const { videoId } = req.body;
+    const { videoId } = req.params;
     if (!isValidObjectId(videoId)) {
       throw new ApiErrors(400, "Invalid Video Id");
     }
@@ -153,7 +153,7 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
     if (playlist.owner.toString() !== req.user?._id.toString()) {
       throw new ApiErrors(403, "You are unauthorized");
     }
-    const { videoId } = req.body;
+    const { videoId } = req.params;
     if (!isValidObjectId(videoId)) {
       throw new ApiErrors(400, "Invalid Video Id");
     }
