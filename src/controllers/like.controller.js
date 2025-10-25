@@ -9,7 +9,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
   try {
-    const { videoId } = req.body;
+    const { videoId } = req.params;
     if (!isValidObjectId(videoId)) {
       throw new ApiErrors(400, "Invalid Video Id");
     }
@@ -42,7 +42,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
   try {
-    const { commentId } = req.body;
+    const { commentId } = req.params;
     if (!isValidObjectId(commentId)) {
       throw new ApiErrors(400, "Invalid Comment Id");
     }
@@ -75,7 +75,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
 const toggleTweetLike = asyncHandler(async (req, res) => {
   try {
-    const { tweetId } = req.body;
+    const { tweetId } = req.params;
     if (!isValidObjectId(tweetId)) {
       throw new ApiErrors(400, "Invalid Tweet Id");
     }
