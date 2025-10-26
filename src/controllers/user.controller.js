@@ -153,22 +153,37 @@ const loginUser = asyncHandler(async (req, res, next) => {
 });
 
 const logOutUser = asyncHandler(async (req, res, next) => {
-  await User.findByIdAndUpdate(
-    req.user._id,
-    { $unset: { refreshToken: 1 } },
-    { new: true }
-  );
+  try {
+    console.log("=== LOGOUT REQUEST ===");
+    console.log("User:", req.user);
 
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+    if (!req.user || !req.user._id) {
+      throw new ApiErrors(401, "User not authenticated");
+    }
 
-  return res
-    .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
-    .json(new ApiResponse(200, {}, "User Logged Out Successfully"));
+    await User.findByIdAndUpdate(
+      req.user._id,
+      { $unset: { refreshToken: 1 } },
+      { new: true }
+    );
+
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    };
+
+    console.log("✅ Logout successful");
+
+    return res
+      .status(200)
+      .clearCookie("accessToken", options)
+      .clearCookie("refreshToken", options)
+      .json(new ApiResponse(200, {}, "User Logged Out Successfully"));
+  } catch (error) {
+    console.error("❌ Logout error:", error);
+    throw new ApiErrors(500, error?.message || "Error logging out");
+  }
 });
 
 const refreshAccessToken = asyncHandler(async (req, res, next) => {
