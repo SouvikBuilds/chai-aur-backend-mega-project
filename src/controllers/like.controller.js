@@ -7,6 +7,35 @@ import { ApiErrors } from "../utils/ApiErrors.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+const getVideoLikeStatus = asyncHandler(async (req, res) => {
+  try {
+    const { videoId } = req.params;
+    if (!isValidObjectId(videoId)) {
+      throw new ApiErrors(400, "Invalid Video Id");
+    }
+    const video = await Video.findById(videoId);
+    if (!video) {
+      throw new ApiErrors(404, "Video not found");
+    }
+    const existingLike = await Like.findOne({
+      video: videoId,
+      likedBy: req.user?._id,
+    });
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { isLiked: !!existingLike },
+          "Video Like status fetched successfully"
+        )
+      );
+  } catch (error) {
+    throw new ApiErrors(500, error?.message);
+  }
+});
+
 const toggleVideoLike = asyncHandler(async (req, res) => {
   try {
     const { videoId } = req.params;
@@ -162,4 +191,10 @@ const getLikedVideos = asyncHandler(async (req, res) => {
   }
 });
 
-export { toggleVideoLike, toggleCommentLike, toggleTweetLike, getLikedVideos };
+export {
+  toggleVideoLike,
+  toggleCommentLike,
+  toggleTweetLike,
+  getLikedVideos,
+  getVideoLikeStatus,
+};
