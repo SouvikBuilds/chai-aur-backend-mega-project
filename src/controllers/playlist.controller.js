@@ -294,4 +294,5 @@ export {
   removeVideoFromPlaylist,
   deletePlaylist,
   updatePlaylist,
+  getVideoSavedStatus,
 };
