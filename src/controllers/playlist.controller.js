@@ -257,6 +257,35 @@ const updatePlaylist = asyncHandler(async (req, res) => {
     throw new ApiErrors(500, error?.message);
   }
 });
+
+const getVideoSavedStatus = asyncHandler(async (req, res) => {
+  try {
+    const { videoId } = req.params;
+    if (!isValidObjectId(videoId)) {
+      throw new ApiErrors(400, "Invalid Video Id");
+    }
+    const video = await Video.findById(videoId);
+    if (!video) {
+      throw new ApiErrors(404, "Video not found");
+    }
+    const savedStatus = await Playlist.findOne({
+      videos: videoId,
+      owner: req.user?._id,
+    });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          isSaved: !!savedStatus,
+        },
+        "Video saved status fetched successfully"
+      )
+    );
+  } catch (error) {
+    throw new ApiErrors(500, error?.message);
+  }
+});
 export {
   createPlaylist,
   getUserPlaylist,
